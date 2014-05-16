@@ -3,13 +3,6 @@
 // Create array to hold list of todo items
 $items = array();
 
-
-// $var += 5;
-// $var = $var + 5;
-
-// $var = $var . 'some value';
-// $var .= 'some value';
-
 // List array items formatted for CLI
 function list_items($list)
 {
@@ -59,9 +52,9 @@ do {
         echo 'Enter item number to remove: ';
         // Get array key
         $key = get_input();
-        $key--;
         // Remove from array
-        unset($items[$key]);
+        unset($items[$key - 1]);
+        $items= array_values($items);
     }
 // Exit when input is (Q)uit
 } while ($input != 'Q');
