@@ -6,21 +6,17 @@ $items = array();
 // List array items formatted for CLI
 function list_items($list)
 {
-    $result = '';
+         $result = '';
 
     foreach($list as $key => $value)
     {
+        
         $add = $key + 1;
         $result .= '[' . $add . '] ' . $value . PHP_EOL;
     }
-
-    return $result;
+        return $result;
 }
-
-echo list_items($items);
-
-
-
+   
 // Get STDIN, strip whitespace and newlines, 
 // and convert to uppercase if $upper is true
 function get_input($upper = false) 
@@ -29,18 +25,33 @@ function get_input($upper = false)
     return $upper ? strtoupper($result) : $result;
 }
 
+function sort_menu($list) 
+{
+    echo '(A)-Z,(Z)-A,(O)rder entered,(R)everse order entered : ';
+        
+    $input = get_input(true);
+    if($input == 'A') {
+        asort($list);
+    } elseif ($input == 'Z') {
+        arsort($list);
+    } elseif ($input == 'O') {
+        ksort($list);
+    } elseif ($input == 'R') {
+        krsort($list);
+     }   
+     //sort the $list
+    return $list;
+}
+
 // The loop!
 do {
     // Echo the list produced by the function
     echo list_items($items);
-
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (Q)uit : ';
-
+    echo '(N)ew item, (R)emove item, (Q)uit, (S)ort : ';
     // Get the input from user
     // Use trim() to remove whitespace and newlines
     $input = get_input(TRUE);
-
     // Check for actionable input
     if ($input == 'N') {
         // Ask for entry
@@ -54,13 +65,17 @@ do {
         $key = get_input();
         // Remove from array
         unset($items[$key - 1]);
-        $items= array_values($items);
+    } elseif ($input == 'S') {
+        $items = sort_menu($items);
     }
+
 // Exit when input is (Q)uit
 } while ($input != 'Q');
-
 // Say Goodbye!
 echo "Goodbye!\n";
+
+
+
 
 // Exit with 0 errors
 exit(0);
