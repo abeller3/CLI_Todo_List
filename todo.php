@@ -43,6 +43,16 @@ function sort_menu($list)
     return $list;
 }
 
+// function unshift($array1)
+// {
+//     echo '(B)eginning or (E)nd : ';
+//     if($input == 'B') {
+//         array_unshift($array1,$item);
+//     } else {
+//         $items [] = $item;
+//     }
+// }
+
 // The loop!
 do {
     // Echo the list produced by the function
@@ -57,8 +67,19 @@ do {
         // Ask for entry
         echo 'Enter item: ';
         // Add entry to list array
-        $items[] = get_input();
-    } elseif ($input == 'R') {
+        $item = get_input(); 
+        //Show menu options for adding values
+        echo 'Add to (B)eginning or (E)nd of the list? ';
+        $add = get_input(TRUE);
+        if ($add == 'B')
+        {
+        // Add entry to list array
+        array_unshift($items, $item);
+        } else {
+            $items[] = $item;
+        }
+    }
+         elseif ($input == 'R') {
         // Remove which item?
         echo 'Enter item number to remove: ';
         // Get array key
@@ -67,7 +88,12 @@ do {
         unset($items[$key - 1]);
     } elseif ($input == 'S') {
         $items = sort_menu($items);
+    } elseif ($input == 'F'){
+        array_shift($items);
+    } elseif ($input == 'L') {
+        array_pop($items);
     }
+
 
 // Exit when input is (Q)uit
 } while ($input != 'Q');
