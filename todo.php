@@ -54,19 +54,34 @@ function option_o($file, $list)
         foreach($contents_array as $value) {
             array_push($list, $value);
         }
-
         fclose($handle);
         return($list);
         }
         
 }
     
+function save($file,$items) {
+    if (file_exists($file)) {
+        echo "This file already exists. Do you want to Override? (Y)es or (N) {$file}?";
+        $input = get_input(TRUE);
+        if ($input == 'Y') {
+            $handle = fopen($file, 'w');
+            foreach ($items as $value) {
+                fwrite($handle, $value . PHP_EOL);
+            }
+            fclose($handle);
+            echo "Your save was succesful!" . PHP_EOL;
+        }
+    }
+}       
+
+
     // The loop!
 do {
     // Echo the list produced by the function
     echo list_items($items);
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (Q)uit, (S)ort (O)pen file : ';
+    echo '(N)ew item, (R)emove item, (Q)uit, (S)ort, (O)pen file, s(A)ve : ';
     // Get the input from user
     // Use trim() to remove whitespace and newlines
     $input = get_input(TRUE);
@@ -104,6 +119,10 @@ do {
         echo 'Enter in desired file: ';
         $file = get_input();
        $items = option_o($file,$items);
+    } elseif ($input == 'A') {
+        echo 'Where do you want to save your file? : ';
+        $input = get_input();
+         save($input,$items);
     }
 
 
