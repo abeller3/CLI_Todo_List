@@ -6,11 +6,9 @@ $items = array();
 // List array items formatted for CLI
 function list_items($list)
 {
-         $result = '';
-
+    $result = '';
     foreach($list as $key => $value)
     {
-        
         $add = $key + 1;
         $result .= '[' . $add . '] ' . $value . PHP_EOL;
     }
@@ -43,22 +41,32 @@ function sort_menu($list)
     return $list;
 }
 
-// function unshift($array1)
-// {
-//     echo '(B)eginning or (E)nd : ';
-//     if($input == 'B') {
-//         array_unshift($array1,$item);
-//     } else {
-//         $items [] = $item;
-//     }
-// }
+function option_o($file, $list)
+{       if(is_readable($file)) {
 
-// The loop!
+        $filesize = filesize($file);
+        $handle = fopen($file, "r");
+        $contents = trim(fread($handle, $filesize));
+        // echo $contents . PHP_EOL;
+        $contents_array = explode("\n", $contents);
+        // print_r($contents_array);
+
+        foreach($contents_array as $value) {
+            array_push($list, $value);
+        }
+
+        fclose($handle);
+        return($list);
+        }
+        
+}
+    
+    // The loop!
 do {
     // Echo the list produced by the function
     echo list_items($items);
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (Q)uit, (S)ort : ';
+    echo '(N)ew item, (R)emove item, (Q)uit, (S)ort (O)pen file : ';
     // Get the input from user
     // Use trim() to remove whitespace and newlines
     $input = get_input(TRUE);
@@ -68,18 +76,18 @@ do {
         echo 'Enter item: ';
         // Add entry to list array
         $item = get_input(); 
-        //Show menu options for adding values
+        // Show menu options for adding values
         echo 'Add to (B)eginning or (E)nd of the list? ';
-        $add = get_input(TRUE);
-        if ($add == 'B')
+        $location = get_input(TRUE);
+        if ($location == 'B')
         {
         // Add entry to list array
         array_unshift($items, $item);
         } else {
             $items[] = $item;
         }
-    }
-         elseif ($input == 'R') {
+        
+    } elseif ($input == 'R') {
         // Remove which item?
         echo 'Enter item number to remove: ';
         // Get array key
@@ -92,7 +100,12 @@ do {
         array_shift($items);
     } elseif ($input == 'L') {
         array_pop($items);
+    } elseif ($input == 'O') {
+        echo 'Enter in desired file: ';
+        $file = get_input();
+       $items = option_o($file,$items);
     }
+
 
 
 // Exit when input is (Q)uit
